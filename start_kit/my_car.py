@@ -22,9 +22,11 @@ class MyCar(Controller):
 
         turn_angle = 0
 
-        if laser_scan[53] < 5:
-            turn_angle = 0.5
-        elif laser_scan[53] > 5:
-            turn_angle = -0.5
+        if laser_scan[17] < 10:
+            turn_angle = 0.1
+        elif laser_scan[17] > 10:
+            turn_angle = -0.1
+
+        print(f"Laser scan at index 17: {laser_scan[17]}, Turn angle: {turn_angle}")
 
         return 20.0, turn_angle
