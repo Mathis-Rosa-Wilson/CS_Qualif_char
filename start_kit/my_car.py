@@ -19,4 +19,12 @@ class MyCar(Controller):
         laser_scan: np.ndarray,
     ) -> tuple[float, float]:
         """Return (target_speed, target_steering_angle). See cocoracer.py and wtf.md."""
-        return 20.0, 0.0
+
+        turn_angle = 0
+
+        if laser_scan[53] < 5:
+            turn_angle = 0.5
+        elif laser_scan[53] > 5:
+            turn_angle = -0.5
+
+        return 20.0, turn_angle
