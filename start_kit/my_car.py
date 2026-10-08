@@ -18,14 +18,14 @@ class MyCar(Controller):
         steering_angle: float,
         laser_scan: np.ndarray,
     ) -> tuple[float, float]:
-        """Return (target_speed, target_steering_angle). See cocoracer.py and wtf.md."""
+        """Return (target_speed, target_steering_angle in radians). See cocoracer.py and wtf.md."""
 
         turn_angle = 0
 
-        if laser_scan[17] < 10:
-            turn_angle = 0.1
-        elif laser_scan[17] > 10:
+        if laser_scan[17] > 10:
             turn_angle = -0.1
+        elif laser_scan[17] < 10:
+            turn_angle = 0.1
 
         print(f"Laser scan at index 17: {laser_scan[17]}, Turn angle: {turn_angle}")
 
