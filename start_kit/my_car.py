@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 from cocoracer import Controller, TrackInfo
 
@@ -20,25 +21,45 @@ class MyCar(Controller):
     ) -> tuple[float, float]:
         """Return (target_speed, target_steering_angle in radians). See cocoracer.py and wtf.md."""
 
-        for dist in laser_scan[:10] + laser_scan[-10:]:
-            if dist < 40:
-                break
-        else:
-            return 30, 0
+        centerline_positions = np.array([(p.x, p.y) for p in self.track_info.centerline])
 
-        avant = laser_scan[0]
+        min_distance = 1000
 
-        avant_gauche = laser_scan[7]
+        for i, (cx, cy) in enumerate(centerline_positions):
+            distance = np.sqrt((x - cx) ** 2 + (y - cy) ** 2)
+            if distance < min_distance:
+                min_distance = distance
+                closest_index = i
 
-        avant_droite = laser_scan[63]
+        closest_point = centerline_positions[closest_index + 5]
 
-        turn_angle = 0
+        AB =  np.sqrt((centerline_positions[closest_index + 5][0] - centerline_positions[closest_index][0]) ** 2 + (centerline_positions[closest_index + 5][1] - centerline_positions[closest_index][1]) ** 2)
 
-        if avant < 20:
-            if avant_gauche < avant_droite:
-                turn_angle = -0.15
-            else:
-                turn_angle = 0.15
+        AC = np.sqrt((closest_point[0] - x) ** 2 + (closest_point[1] - y) ** 2)
+
+        angle = np.arcsin(AB / AC)
+
+        heading = yaw + math.pi - angle
+
+
+        # avant = laser_scan[0]
+
+        # avant_gauche = laser_scan[7]
+
+        # avant_droite = laser_scan[63]
+
+        # turn_angle = 0
+
+        # if avant < 20:
+        #     if avant_gauche < avant_droite:
+        #         turn_angle = -0.15
+        #     else:
+        #         turn_angle = 0.15
+
+        # if avant_gauche < 5:
+        #     turn_angle = 0.2
+        # if avant_droite < 5:
+        #     turn_angle = -0.2
 
         if avant_gauche < 5:
             turn_angle = 0.2
@@ -50,6 +71,6 @@ class MyCar(Controller):
         # elif laser_scan[17] < 10:
         #     turn_angle = 0.01
 
-        print(f"Avant: {avant}, Turn angle: {turn_angle}")
+        print(f"Heading: {heading}")
 
-        return 20.0, turn_angle
+        return 20.0, heading
