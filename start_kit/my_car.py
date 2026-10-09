@@ -8,6 +8,7 @@ class MyCar(Controller):
     """Your car: edit `step`, then push this file. Contract: cocoracer.py, wtf.md."""
 
     def reset(self, track_info: TrackInfo) -> None:
+        self.track_info = track_info
         """Called once before the first step. See cocoracer.py and wtf.md."""
 
     def step(
@@ -31,15 +32,21 @@ class MyCar(Controller):
                 min_distance = distance
                 closest_index = i
 
-        closest_point = centerline_positions[(closest_index + 5) % len(centerline_positions)]
+        heading_point = centerline_positions[(closest_index + 20) % len(centerline_positions)]
 
-        AB =  np.sqrt((centerline_positions[(closest_index + 5) % len(centerline_positions)][0] - centerline_positions[closest_index][0]) ** 2 + (centerline_positions[(closest_index + 5) % len(centerline_positions)][1] - centerline_positions[closest_index][1]) ** 2)
+        AB =  np.sqrt((heading_point[0] - centerline_positions[closest_index][0]) ** 2 + (heading_point[1] - centerline_positions[closest_index][1]) ** 2)
 
-        AC = np.sqrt((closest_point[0] - x) ** 2 + (closest_point[1] - y) ** 2)
+        AC = np.sqrt((heading_point[0] - x) ** 2 + (heading_point[1] - y) ** 2)
 
-        angle = np.arcsin(AB / AC)
+        print(f"AB: {AB}, AC: {AC}")
 
-        heading = yaw + math.pi - angle
+        heading = 0
+
+        if AC < 1e-3:
+            heading = 0
+        else:
+            angle = np.arcsin(AB / AC)
+            heading = yaw + math.pi - angle
 
 
         # avant = laser_scan[0]
@@ -61,10 +68,10 @@ class MyCar(Controller):
         # if avant_droite < 5:
         #     turn_angle = -0.2
 
-        if avant_gauche < 5:
-            turn_angle = 0.2
-        if avant_droite < 5:
-            turn_angle = -0.2
+        # if avant_gauche < 5:
+        #     turn_angle = 0.2
+        # if avant_droite < 5:
+        #     turn_angle = -0.2
 
         # if laser_scan[17] > 10:
         #     turn_angle = 0.01
