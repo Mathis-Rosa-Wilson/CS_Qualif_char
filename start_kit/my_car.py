@@ -61,10 +61,10 @@ class MyCar(Controller):
         # if avant_droite < 5:
         #     turn_angle = -0.2
 
-        if avant_gauche < 5:
-            turn_angle = 0.2
-        if avant_droite < 5:
-            turn_angle = -0.2
+        # if avant_gauche < 5:
+        #     turn_angle = 0.2
+        # if avant_droite < 5:
+        #     turn_angle = -0.2
 
         # if laser_scan[17] > 10:
         #     turn_angle = 0.01
