@@ -31,9 +31,9 @@ class MyCar(Controller):
                 min_distance = distance
                 closest_index = i
 
-        closest_point = centerline_positions[closest_index + 5]
+        closest_point = centerline_positions[(closest_index + 5) % len(centerline_positions)]
 
-        AB =  np.sqrt((centerline_positions[closest_index + 5][0] - centerline_positions[closest_index][0]) ** 2 + (centerline_positions[closest_index + 5][1] - centerline_positions[closest_index][1]) ** 2)
+        AB =  np.sqrt((centerline_positions[(closest_index + 5) % len(centerline_positions)][0] - centerline_positions[closest_index][0]) ** 2 + (centerline_positions[(closest_index + 5) % len(centerline_positions)][1] - centerline_positions[closest_index][1]) ** 2)
 
         AC = np.sqrt((closest_point[0] - x) ** 2 + (closest_point[1] - y) ** 2)
 
