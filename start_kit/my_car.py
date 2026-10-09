@@ -20,6 +20,12 @@ class MyCar(Controller):
     ) -> tuple[float, float]:
         """Return (target_speed, target_steering_angle in radians). See cocoracer.py and wtf.md."""
 
+        for dist in laser_scan[:10] + laser_scan[-10:]:
+            if dist < 20:
+                break
+        else:
+            return 30, 0
+
         avant = laser_scan[0]
 
         avant_gauche = laser_scan[7]
