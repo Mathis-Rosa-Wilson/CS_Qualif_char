@@ -81,3 +81,12 @@ class MyCar(Controller):
         print(f"Heading: {heading}")
 
         return 20.0, heading
+
+if __name__ == "__main__":
+    class P:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+    c = MyCar()
+    c.track_info = TrackInfo("yo", 5, 20, [P(n / 10, 0) for n in range(20)])
+    c.step(0,0,0,0,0,[10 for _ in range(70)])
