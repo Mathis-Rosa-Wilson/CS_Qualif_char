@@ -21,7 +21,7 @@ class MyCar(Controller):
         """Return (target_speed, target_steering_angle in radians). See cocoracer.py and wtf.md."""
 
         for dist in laser_scan[:10] + laser_scan[-10:]:
-            if dist < 20:
+            if dist < 40:
                 break
         else:
             return 30, 0
